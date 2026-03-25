@@ -16,7 +16,6 @@ public class TimeSlotModel {
 
     private LocalDateTime starTime;
     private LocalDateTime endTime;
-    private boolean isBooked;
 
 
 
@@ -37,11 +36,5 @@ public class TimeSlotModel {
     }
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
-    }
-    public boolean isBooked() {
-        return isBooked;
-    }
-    public void setBooked(boolean isBooked) {
-        this.isBooked = isBooked;
     }
 }

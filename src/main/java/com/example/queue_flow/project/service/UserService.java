@@ -1,0 +1,34 @@
+package com.example.queue_flow.project.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.queue_flow.project.dto.CreateUserDTO;
+import com.example.queue_flow.project.enums.Role;
+import com.example.queue_flow.project.mapper.UserResponse;
+import com.example.queue_flow.project.model.UserModel;
+import com.example.queue_flow.project.repository.UserRepository;
+
+@Service
+public class UserService {
+
+    @Autowired
+    private UserRepository repository;
+
+    public UserResponse createUser(CreateUserDTO dto) {
+        UserModel user = new UserModel();
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        user.setRole(Role.CLIENT);
+
+        UserModel saveModel = repository.save(user);
+
+        return new UserResponse(
+            saveModel.getId(),
+            saveModel.getName(),
+            saveModel.getEmail(),
+            saveModel.getRole()
+        );
+    }
+}
