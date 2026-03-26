@@ -2,16 +2,14 @@ package com.example.queue_flow.project.model;
 
 import java.time.LocalDateTime;
 
-public class APiResponse<T> {
+public class ApiResponse<T> {
     private boolean success;
     private T data;
     private String message;
     private LocalDateTime timestamp;
 
 
-    
-
-    public APiResponse(boolean success, T data, String message, LocalDateTime timestamp) {
+    public ApiResponse(boolean success, T data, T error, String message, LocalDateTime timestamp) {
         this.success = success;
         this.data = data;
         this.message = message;
@@ -19,8 +17,7 @@ public class APiResponse<T> {
     }
 
 
-    
-    public boolean isSuccess() {
+        public boolean isSuccess() {
         return success;
     }
 
@@ -38,6 +35,7 @@ public class APiResponse<T> {
     public void setData(T data) {
         this.data = data;
     }
+
 
 
     public String getMessage() {

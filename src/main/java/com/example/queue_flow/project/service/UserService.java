@@ -1,5 +1,7 @@
 package com.example.queue_flow.project.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +32,15 @@ public class UserService {
             saveModel.getEmail(),
             saveModel.getRole()
         );
+    }
+
+    public List<UserResponse> getAllUsers() {
+        List<UserModel> users = repository.findAll();
+        return users.stream().map(user -> new UserResponse(
+            user.getId(),
+            user.getName(),
+            user.getEmail(),
+            user.getRole()
+        )).toList();
     }
 }
