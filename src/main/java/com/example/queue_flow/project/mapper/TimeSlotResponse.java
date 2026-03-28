@@ -1,27 +1,23 @@
-package com.example.queue_flow.project.model;
+package com.example.queue_flow.project.mapper;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
 
-@Entity
-public class TimeSlotModel {
+public class TimeSlotResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = "Start time required")
     private LocalDateTime starTime;
-
-    @NotBlank(message = "End time required")
     private LocalDateTime endTime;
 
 
+    
+    public TimeSlotResponse(Long id, LocalDateTime starTime, LocalDateTime endTime) {
+        this.id = id;
+        this.starTime = starTime;
+        this.endTime = endTime;
+    }
+
+    
     public Long getId() {
         return id;
     }
