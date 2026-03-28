@@ -31,13 +31,22 @@ public class UserController {
             true, 
             users, 
             "done",
+            null,
             LocalDateTime.now()
         );
     }
 
     @PostMapping
-    public UserResponse createUser(@Valid @RequestBody CreateUserDTO dto) {
-        return userService.createUser(dto);
+    public ApiResponse<UserResponse> createUser(@Valid @RequestBody CreateUserDTO dto) {
+        UserResponse result = userService.createUser(dto);
+
+        return new ApiResponse<UserResponse>(
+            true, 
+            result, 
+            "done", 
+            null,  
+            LocalDateTime.now()
+        );
     }
 
 }

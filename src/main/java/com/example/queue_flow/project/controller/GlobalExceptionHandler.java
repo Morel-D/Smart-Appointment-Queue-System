@@ -16,6 +16,7 @@ import com.example.queue_flow.project.model.ApiResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // Validation error
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidationErrors(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -30,9 +31,25 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
             new ApiResponse<>(
             false, 
+            null,
+            "feild_validation_errors",
             errors, 
-            "feild_validation_errors", 
             LocalDateTime.now())
+        );
+    }
+
+
+    // Business errors
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handlerBusinessErrors(IllegalArgumentException ex){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+            new ApiResponse<>(
+            false,
+            null,
+            ex.getMessage(),
+            null,
+            LocalDateTime.now()
+        )
         );
     }
 }

@@ -18,6 +18,12 @@ public class UserService {
     private UserRepository repository;
 
     public UserResponse createUser(CreateUserDTO dto) {
+
+        // check if email exist
+        if(repository.existsByEmail(dto.getEmail())){
+            throw new IllegalArgumentException("Email already exists");
+        }
+
         UserModel user = new UserModel();
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());

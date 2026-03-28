@@ -7,5 +7,5 @@ import com.example.queue_flow.project.model.UserModel;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserModel, Long> {
-    
+    boolean existsByEmail(String email);
 }
