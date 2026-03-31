@@ -7,7 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name= "timeslot_model")
@@ -17,10 +16,7 @@ public class TimeSlotModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Start time required")
     private LocalDateTime starTime;
-
-    @NotBlank(message = "End time required")
     private LocalDateTime endTime;
 
 

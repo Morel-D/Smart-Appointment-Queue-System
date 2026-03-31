@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.queue_flow.project.dto.TimeSlotDTO;
 import com.example.queue_flow.project.mapper.TimeSlotResponse;
 import com.example.queue_flow.project.model.ApiResponse;
-import com.example.queue_flow.project.model.TimeSlotModel;
 import com.example.queue_flow.project.service.TimeSlotService;
 
 import jakarta.validation.Valid;
@@ -25,7 +25,7 @@ public class TimeSlotController {
     private TimeSlotService timeSlotService;
 
     @PostMapping
-    public ApiResponse<TimeSlotResponse> createTimeSlot(@Valid @RequestBody TimeSlotModel dto) {
+    public ApiResponse<TimeSlotResponse> createTimeSlot(@Valid @RequestBody TimeSlotDTO dto) {
         TimeSlotResponse result = timeSlotService.creatTimeSlot(dto);
         return new ApiResponse<TimeSlotResponse>(
             true, 
@@ -43,7 +43,7 @@ public class TimeSlotController {
             true, 
             timeSlots, 
             "done", 
-            timeSlots, 
+            null, 
             LocalDateTime.now()
         );
     }
