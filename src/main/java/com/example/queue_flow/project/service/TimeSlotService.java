@@ -30,7 +30,6 @@ public class TimeSlotService {
         );
     }
 
-
     public List<TimeSlotResponse> getAllTimeSlot() {
         List<TimeSlotModel> timeSlotModel = repository.findAll();
         return timeSlotModel.stream().map(timeSlot -> new TimeSlotResponse(
