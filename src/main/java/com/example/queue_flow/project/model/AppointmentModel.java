@@ -3,6 +3,8 @@ package com.example.queue_flow.project.model;
 import com.example.queue_flow.project.enums.AppoitmentStatus;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,6 +21,7 @@ public class AppointmentModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserModel user;
@@ -26,15 +29,9 @@ public class AppointmentModel {
     @OneToOne
     @JoinColumn(name = "timeslot_id")
     private TimeSlotModel timeSlot;
+
+    @Enumerated(EnumType.STRING)
     private AppoitmentStatus status;
-
-
-    public AppointmentModel(Long id, UserModel user, TimeSlotModel timeSlot, AppoitmentStatus status) {
-        this.id = id;
-        this.user = user;
-        this.timeSlot = timeSlot;
-        this.status = status;
-    }
 
 
     public Long getId() {
@@ -43,6 +40,7 @@ public class AppointmentModel {
     public void setId(Long id) {
         this.id = id;
     }
+
     public UserModel getUser() {
         return user;
     }
