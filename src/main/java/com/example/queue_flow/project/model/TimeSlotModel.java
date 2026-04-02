@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 @Entity
 @Table(name= "timeslot_model")
@@ -18,6 +19,9 @@ public class TimeSlotModel {
 
     private LocalDateTime starTime;
     private LocalDateTime endTime;
+
+    @Version
+    private Integer version;
 
 
     public Long getId() {

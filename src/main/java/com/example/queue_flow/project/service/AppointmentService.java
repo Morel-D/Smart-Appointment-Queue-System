@@ -1,5 +1,7 @@
 package com.example.queue_flow.project.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,13 @@ public class AppointmentService {
 
         TimeSlotModel timeSlot = timeSlotRepository.findById(dto.getTimeslot_id())
             .orElseThrow(() -> new IllegalArgumentException("Time slot not found"));
+
+        // Prevent over booking
+        boolean exists = repository.existsByUserAndTimeSlotAndStatusIn(user, timeSlot, List.of(AppoitmentStatus.PENDING, AppoitmentStatus.CONFIRMED));
+
+        if(exists){
+            throw new IllegalArgumentException("User already has an active booking for this slot");
+        }
 
         AppointmentModel appointment = new AppointmentModel();
         appointment.setUser(user);
