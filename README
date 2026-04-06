@@ -1,0 +1,254 @@
+# 📅 Smart Appointment & Queue Management System
+
+## 🚀 Overview
+
+This project is a **backend-driven appointment scheduling system** designed to handle **high-demand booking scenarios** using a **queue-based approach**.
+
+Unlike traditional systems that block users when a time slot is full, this system introduces **smart queue logic**, allowing multiple users to register for the same time slot while maintaining order, fairness, and predictability.
+
+---
+
+## 💡 Key Concept
+
+### 🔁 From Booking → Queue System
+
+Instead of:
+
+* ❌ One user per slot (risk of frustration)
+* ❌ Hard blocking when full
+
+We implement:
+
+* ✅ Multiple users per time slot
+* ✅ Ordered queue (first come, first served)
+* ✅ Real-time position tracking
+* ✅ Estimated wait time calculation
+
+---
+
+## 🧠 Core Features
+
+### 1. Appointment Booking
+
+* Users can book a time slot
+* Prevents duplicate booking by the same user
+* Supports multiple users per slot (queue system)
+
+---
+
+### 2. Queue Positioning
+
+* Each user gets a **position in the queue**
+* Automatically calculated based on booking order
+
+Example:
+
+```
+Slot: 10:00–11:00
+User A → Position 1
+User B → Position 2
+User C → Position 3
+```
+
+---
+
+### 3. Estimated Wait Time
+
+* Dynamically calculated based on:
+
+  * Queue position
+  * Average service duration per user
+
+---
+
+### 4. Appointment Status Management
+
+Each appointment has a lifecycle:
+
+* `PENDING` → waiting in queue
+* `CONFIRMED` → validated/approved
+* *(extendable to COMPLETED, CANCELLED)*
+
+---
+
+### 5. Overbooking Control
+
+* Same user cannot book the same slot twice
+* Controlled via repository-level query logic
+
+---
+
+## 🏗️ Technical Design
+
+### 🔹 Architecture
+
+* Layered architecture:
+
+  * Controller → Service → Repository → Database
+
+---
+
+### 🔹 Database Design
+
+**Entities:**
+
+* `User`
+* `TimeSlot`
+* `Appointment`
+
+**Relationships:**
+
+* One `User` → many `Appointments`
+* One `TimeSlot` → many `Appointments` (queue)
+
+---
+
+### 🔹 Concurrency Handling
+
+To prevent race conditions (simultaneous booking):
+
+* ✅ **Optimistic Locking**
+
+  * Implemented using `@Version`
+  * Prevents double booking in high concurrency scenarios
+
+---
+
+### 🔹 Smart Query System (Spring Data JPA)
+
+Example:
+
+```java
+existsByUserAndTimeSlotAndStatusIn(...)
+```
+
+👉 Automatically translated into SQL by Spring Data JPA using method naming conventions.
+
+---
+
+## 🔌 API Endpoints
+
+### 📍 Create Appointment
+
+```
+POST /appointments
+```
+
+**Description:**
+Create a new appointment for a user in a specific time slot.
+
+---
+
+### 📍 Get Queue Position
+
+```
+GET /appointments/{id}/position
+```
+
+**Response:**
+
+```json
+{
+  "appointmentId": 12,
+  "position": 3,
+  "estimatedWaitTime": 30
+}
+```
+
+---
+
+### 📍 Get Appointments by Slot
+
+```
+GET /timeslots/{id}/appointments
+```
+
+Returns ordered queue for a slot.
+
+---
+
+## ⚙️ Business Rules
+
+* A user **cannot book the same slot twice**
+* A time slot can have **multiple users (queue)**
+* Queue order is based on:
+
+  * Creation time (`createdAt ASC`)
+* Only active appointments (`PENDING`, `CONFIRMED`) are considered
+
+---
+
+## 🧪 Testing Strategy
+
+### Using Postman
+
+* Simulate multiple users booking the same slot
+* Validate:
+
+  * Queue ordering
+  * Duplicate prevention
+  * Correct position calculation
+
+---
+
+## 📈 Scalability Considerations
+
+* Queue logic allows handling **high demand without rejection**
+* Easily extendable with:
+
+  * Slot capacity limits
+  * Priority users (VIP queue)
+  * Real-time updates (WebSocket)
+
+---
+
+## 🔐 Error Handling
+
+* Global exception handling implemented
+* Returns structured API responses:
+
+```json
+{
+  "success": false,
+  "message": "User already booked this slot"
+}
+```
+
+---
+
+## 🛠️ Tech Stack
+
+* Java + Spring Boot
+* Spring Data JPA (Hibernate)
+* MySQL / PostgreSQL
+* RESTful API
+* Postman (testing)
+
+---
+
+## 🎯 Why This Project Stands Out
+
+This system demonstrates:
+
+* ✅ Real-world problem solving (queue vs blocking systems)
+* ✅ Backend architecture design
+* ✅ Concurrency handling (optimistic locking)
+* ✅ Clean API design
+* ✅ Business logic thinking (not just CRUD)
+
+---
+
+## 🚀 Future Improvements
+
+* WebSocket for live queue updates
+* Payment integration
+* Notification system (SMS / Email)
+* Admin dashboard
+
+---
+
+## 👨‍💻 Author
+
+Backend & System Design by Morel Denzel
+
+---
