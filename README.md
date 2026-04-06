@@ -238,17 +238,10 @@ This system demonstrates:
 
 ---
 
-## 🚀 Future Improvements
-
-* WebSocket for live queue updates
-* Payment integration
-* Notification system (SMS / Email)
-* Admin dashboard
-
----
-
 ## 👨‍💻 Author
 
 Backend & System Design by Morel Denzel
 
 ---
+
+
