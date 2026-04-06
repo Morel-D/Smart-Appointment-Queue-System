@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
     // Business errors
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handlerBusinessErrors(IllegalArgumentException ex){
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
             new ApiResponse<>(
             false,
             null,

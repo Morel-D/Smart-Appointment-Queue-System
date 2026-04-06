@@ -1,6 +1,8 @@
 package com.example.queue_flow.project.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,10 +40,21 @@ public class AppointmentService {
             .orElseThrow(() -> new IllegalArgumentException("Time slot not found"));
 
         // Prevent over booking
-        boolean exists = repository.existsByUserAndTimeSlotAndStatusIn(user, timeSlot, List.of(AppoitmentStatus.PENDING, AppoitmentStatus.CONFIRMED));
+        boolean exists = repository.existsByUserAndTimeSlotAndStatusIn(
+            user,
+            timeSlot,
+            List.of(AppoitmentStatus.PENDING, AppoitmentStatus.CONFIRMED)
+        );
 
-        if(exists){
-            throw new IllegalArgumentException("User already has an active booking for this slot");
+        if (exists) {
+            throw new IllegalArgumentException("You already booked this slot");
+        }
+
+
+        boolean timeSlotBooked = repository.existsByTimeSlotAndStatusIn(timeSlot, List.of(AppoitmentStatus.PENDING, AppoitmentStatus.CONFIRMED));
+
+        if (timeSlotBooked) {
+            throw new IllegalArgumentException("This slot has already been booked");
         }
 
         AppointmentModel appointment = new AppointmentModel();
@@ -57,6 +70,32 @@ public class AppointmentService {
             appointment.getTimeSlot().getId(),
             appointment.getStatus()
         );
+    }
+
+
+    public Map<String, Object> getAppointmentPosition(Long appointmentId) {
+        AppointmentModel appointment = repository.findById(appointmentId)
+            .orElseThrow(() -> new IllegalArgumentException("Appointment not found"));
+
+        List<AppointmentModel> queue = repository.findByTimeSlotOrderByCreatedAtAsc(appointment.getTimeSlot());
+
+        int position = 0;
+
+        for(int i = 0; i < queue.size(); i++){
+            if(queue.get(i).getId().equals(appointmentId)) {
+                position = i + 1;
+                break;
+            }
+        }
+
+        // Estimate the wait time
+        int avgMinutesPerUser = 10;
+        int estimateWait = (position - 1) * avgMinutesPerUser;
+        Map<String, Object> result = new HashMap<>();
+        result.put("position", position);
+        result.put("Estimates Wait Time", estimateWait);
+
+        return result;
     }
 
 }

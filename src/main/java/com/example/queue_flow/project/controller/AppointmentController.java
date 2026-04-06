@@ -2,9 +2,11 @@ package com.example.queue_flow.project.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,5 +36,18 @@ public class AppointmentController {
             "done",
              null, 
              LocalDateTime.now());
+    }
+
+    @GetMapping("/{id}/position")
+    public ApiResponse<?> getPosition(@PathVariable Long id) {
+        Map<String, Object> result = appointmentService.getAppointmentPosition(id);
+
+        return new ApiResponse<>(
+            true, 
+            result, 
+            "done", 
+            null, 
+            LocalDateTime.now()
+        );
     }
 }
