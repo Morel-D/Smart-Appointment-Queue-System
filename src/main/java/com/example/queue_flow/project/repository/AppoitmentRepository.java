@@ -17,5 +17,5 @@ public interface AppoitmentRepository extends JpaRepository<AppointmentModel, Lo
 
     boolean existsByTimeSlotAndStatusIn(TimeSlotModel timeSlot, Collection<AppoitmentStatus> statuses);
 
-    List<AppointmentModel> findByTimeSlotOrderByCreatedAtAsc(TimeSlotModel timeSlot);
+    List<AppointmentModel> findAllByStatusIn(List<AppoitmentStatus> statuses);
 } 
