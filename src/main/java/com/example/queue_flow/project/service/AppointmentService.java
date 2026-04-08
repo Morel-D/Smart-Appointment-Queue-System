@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.queue_flow.project.dto.AppointmentDTO;
@@ -25,7 +27,7 @@ import com.example.queue_flow.project.repository.UserRepository;
 public class AppointmentService {
 
 
-        private long calculateEstimateWait(int position, List<AppointmentModel> sortedAppointment, LocalDateTime targetStart) {
+    private long calculateEstimateWait(int position, List<AppointmentModel> sortedAppointment, LocalDateTime targetStart) {
             if(position <= 1) {
                 return 0;
             }
@@ -93,7 +95,6 @@ public class AppointmentService {
         );
     }
 
-
     public Map<String, Object> getAppointmentPosition(Long appointmentId) {
         AppointmentModel traget = repository.findById(appointmentId)
         .orElseThrow(() -> new IllegalArgumentException("Appointment not found"));
@@ -136,4 +137,21 @@ public class AppointmentService {
         return result;
     }
 
+    public Page<AppointmentDTO> getAllAppointments(AppoitmentStatus status, Pageable pageable) {
+        Page<AppointmentModel> appointments;
+
+        if(status != null){
+            appointments = repository.findByStatusContaining(status, pageable);
+            if(appointments.isEmpty()){
+                throw new IllegalArgumentException("No such record found");
+            }
+        }else {
+            appointments = repository.findAll(pageable);
+        }
+
+        return appointments.map(appointment -> new AppointmentDTO(
+            appointment.getUser().getId(), 
+            appointment.getTimeSlot().getId()
+        ));
+    }
 }

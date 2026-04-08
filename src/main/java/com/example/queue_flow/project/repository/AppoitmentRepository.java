@@ -3,6 +3,8 @@ package com.example.queue_flow.project.repository;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +18,7 @@ public interface AppoitmentRepository extends JpaRepository<AppointmentModel, Lo
     boolean existsByUserAndTimeSlotAndStatusIn(UserModel user, TimeSlotModel timeSlot, Collection<AppoitmentStatus> statuses);
 
     boolean existsByTimeSlotAndStatusIn(TimeSlotModel timeSlot, Collection<AppoitmentStatus> statuses);
-
     List<AppointmentModel> findAllByStatusIn(List<AppoitmentStatus> statuses);
+
+    Page<AppointmentModel> findByStatusContaining(AppoitmentStatus status, Pageable pageable);
 } 

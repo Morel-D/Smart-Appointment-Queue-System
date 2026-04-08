@@ -5,14 +5,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.queue_flow.project.dto.AppointmentDTO;
+import com.example.queue_flow.project.enums.AppoitmentStatus;
 import com.example.queue_flow.project.mapper.AppointmentResponse;
 import com.example.queue_flow.project.model.ApiResponse;
 import com.example.queue_flow.project.service.AppointmentService;
@@ -50,4 +54,17 @@ public class AppointmentController {
             LocalDateTime.now()
         );
     }
+
+    @GetMapping
+    public ApiResponse<Page<AppointmentDTO>> getAppointments(@RequestParam(required = false, value = "status") AppoitmentStatus status, Pageable pageable) {
+        Page<AppointmentDTO> appoitments = appointmentService.getAllAppointments(status, pageable);
+
+        return new ApiResponse<>(
+            true, 
+            appoitments, 
+            "done", 
+            null, 
+            LocalDateTime.now());
+    }
+
 }
