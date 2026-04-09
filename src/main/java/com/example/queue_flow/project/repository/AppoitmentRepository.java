@@ -2,6 +2,7 @@ package com.example.queue_flow.project.repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,9 +17,9 @@ import com.example.queue_flow.project.model.UserModel;
 @Repository
 public interface AppoitmentRepository extends JpaRepository<AppointmentModel, Long> {
     boolean existsByUserAndTimeSlotAndStatusIn(UserModel user, TimeSlotModel timeSlot, Collection<AppoitmentStatus> statuses);
-
     boolean existsByTimeSlotAndStatusIn(TimeSlotModel timeSlot, Collection<AppoitmentStatus> statuses);
     List<AppointmentModel> findAllByStatusIn(List<AppoitmentStatus> statuses);
-
     Page<AppointmentModel> findByStatusContaining(AppoitmentStatus status, Pageable pageable);
+
+    Optional<AppointmentModel> findByIdAndUserId(Long id, Long user_id);
 } 

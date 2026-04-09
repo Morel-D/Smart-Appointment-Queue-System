@@ -154,4 +154,25 @@ public class AppointmentService {
             appointment.getTimeSlot().getId()
         ));
     }
+
+    public AppointmentResponse updatesAppoitmentStatus(AppoitmentStatus status, Long appointmentId) {
+
+        AppointmentModel appoitment = repository.findById(appointmentId)
+            .orElseThrow(() -> new IllegalArgumentException("Appoitment not found"));
+
+        // udpate status
+        appoitment.setStatus(status);
+
+        // Save & return
+        AppointmentModel updateAppointmentModel = repository.save(appoitment);
+
+        // Convert the response
+        return new AppointmentResponse(
+            updateAppointmentModel.getId(), 
+            updateAppointmentModel.getUser().getId(), 
+            updateAppointmentModel.getTimeSlot().getId(), 
+            updateAppointmentModel.getStatus()
+        );
+
+    }
 }
